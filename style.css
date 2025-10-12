@@ -1,0 +1,67 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.TacBox {
+    width: 100px;
+    display: grid;
+    gap: 16px;
+    margin: 0;
+    height: 100px;
+    background: #333;
+    cursor: pointer;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #fff;
+}
+
+@keyframes _fadeIn  {
+    0% {
+        opacity: 0%;
+    }
+    100% {
+        opacity: 100%;
+    }
+}
+
+@keyframes _float_in {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0%;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 100%;
+    }
+}
+
+#canvas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+}
+
+#ToastBox {
+    position: fixed;
+    top: 20px;
+    left: 36%;
+    font-family: sans-serif;
+    transform: translateX(-50%);
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+    display: none;
+    align-items: center;
+    gap: 16px;
+    z-index: 1000;
+    animation: _float_in 0.5s ease forwards;
+}

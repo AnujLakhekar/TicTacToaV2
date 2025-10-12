@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tic Tac Toe Multiplayer</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<style>
+    body {
+        font-family: sans-serif;
+        text-align: center;
+        background: #121212;
+        color: white;
+    }
+
+    .board {
+        display: grid;
+        grid-template-columns: repeat(3, 100px);
+        gap: 0px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    @keyframes _fadeIn  {
+        0% {
+            opacity: 0%;
+        }
+        100% {
+            opacity: 100%;
+        }
+    }
+
+    @keyframes _float_in {
+        0% {
+            transform: translateY(-100%);
+            opacity: 0%;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 100%;
+        }
+    }
+
+
+    .cell {
+        width: 100px;
+        height: 100px;
+        font-size: 2em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+</style>
+<body>
+<h1>Tic Tac Toe</h1>
+
+<div id="room">
+    <input id="roomId" placeholder="Enter room ID" />
+    <button id="joinBtn">Join Room</button>
+</div>
+
+<div id="game" style="display:none;">
+    <p id="status"></p>
+   <div id="BoardBox">
+       <div id="board" class="board"></div>
+   </div>
+</div>
+
+<script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

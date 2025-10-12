@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Start Game</title>
+</head>
+<body>
+<h1>Game Start</h1>
+<button id="StartLocal">Start Local Game</button>
+<button id="StartMulti">Start MultiPlayer Game</button>
+<script>
+    document.getElementById("StartLocal").onclick = function() {
+        window.location.href = "local";
+    };
+
+    document.getElementById("StartMulti").onclick = function() {
+        window.location.href = "multiplayer";
+    };
+</script>
+</body>
+</html>

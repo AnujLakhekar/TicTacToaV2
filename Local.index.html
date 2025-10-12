@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Anuj</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    .TacBox {
+        width: 100px;
+        display: grid;
+        gap: 16px;
+        margin: 0;
+        height: 100px;
+        background: #333;
+        cursor: pointer;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #fff;
+    }
+
+    @keyframes _fadeIn  {
+        0% {
+            opacity: 0%;
+        }
+        100% {
+            opacity: 100%;
+        }
+    }
+
+    @keyframes _float_in {
+        0% {
+            transform: translateY(-100%);
+            opacity: 0%;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 100%;
+        }
+    }
+
+    #canvas {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        width: 300px;
+    }
+
+    #ToastBox {
+        position: fixed;
+        top: 20px;
+        left: 36%;
+        font-family: sans-serif;
+        transform: translateX(-50%);
+        color: white;
+        padding: 16px;
+        border-radius: 8px;
+        display: none;
+        align-items: center;
+        gap: 16px;
+        z-index: 1000;
+        animation: _float_in 0.5s ease forwards;
+    }
+
+</style>
+<body>
+<div id="ToastBox">
+    <div id="ToastMessage">
+        This is a 2 player game. Player 1 is X and Player 2 is O.
+    </div>
+    <button id="ToastClose" onclick="document.getElementById('ToastBox').style.display='none'">X</button>
+</div>
+<div id="canvasBox">
+    <div id="canvas">
+    </div>
+</div>
+<script>
+
+    const canvas = document.getElementById("canvas");
+    const Boxs = 3 * 3;
+    let board = Array(9).fill("");
+    let gameOver = false;
+    const winLines = [
+        [0,1,2], [3,4,5], [6,7,8], // rows
+        [0,3,6], [1,4,7], [2,5,8], // columns
+        [0,4,8], [2,4,6]           // diagonals
+    ];
+    const bg = Math.random() * 360;
+    let turn = "X"
+    document.body.style.background =`hsl(${bg}, 100%, 10%)`;
+    document.getElementById("canvasBox").style.border = `5px solid hsl(${bg}, 100%, 20%)`;
+    document.getElementById("canvasBox").style.borderRadius = `5%`;
+
+    function checkWinner(board) {
+        for (const line of winLines) {
+            const [a, b, c] = line;
+            if (
+                board[a] &&
+                board[a] === board[b] &&
+                board[a] === board[c]
+            ) {
+                return board[a]; // "X" or "O"
+            }
+        }
+        return null; // no winner
+    }
+
+    function Toast(message) {
+        const toastBox = document.getElementById("ToastBox");
+        const toastMessage = document.getElementById("ToastMessage");
+        toastMessage.innerText = message;
+        toastBox.style.display = "flex";
+        toastBox.style.background = `hsl(${bg}, 100%, 50%)`
+        toastBox.style.border = `2px solid hsl(${bg}, 100%, 30%)`
+        document.getElementById("ToastClose").style.background = `hsl(${bg}, 100%, 30%)`;
+        document.getElementById("ToastClose").style.color = `hsl(${bg}, 100%, 90%)`;
+        setTimeout(() => {
+            document.getElementById("ToastClose").click();
+        }, 3000);
+    }
+
+    for (let i = 0; i < Boxs; i++) {
+        const div = document.createElement("div");
+        div.setAttribute("class", "TacBox");
+        div.style.animation = `_fadeIn 1s ease ${i / 10}s forwards`;
+
+        if (i == 0) {
+            div.style.borderRadius = "10% 0 0";
+        } else if (i == 2) {
+            div.style.borderRadius = "0 10% 0 0";
+        } else if (i == 6) {
+            div.style.borderRadius = "0 0 0 10%";
+        } else if (i == 8) {
+            div.style.borderRadius = "0 0 10% 0";
+        }
+
+        setTimeout(() =>
+        {
+            div.style.background = `hsl(${bg}, 100%, 50%)`;
+            div.style.border = `2px solid hsl(${bg}, 100%, 30%)`;
+        }, i * 100);
+
+        canvas.appendChild(div);
+
+    }
+
+    const boxes = document.getElementsByClassName("TacBox");
+
+
+
+    for (let i = 0; i < boxes.length; i++) {
+        boxes[i].addEventListener("click", function() {
+            if (boxes[i].innerHTML == "" && !gameOver) {
+                // Update board array
+                board[i] = turn;
+                const svgColor = `hsl(${bg}, 100%, 20%)`;
+                if (turn == "X") {
+                    boxes[i].innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${svgColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`;
+                } else {
+                    boxes[i].innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${svgColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>`;
+                }
+                boxes[i].style.color = `hsl(${bg}, 100%, 90%)`;
+                boxes[i].style.fontSize = "200px";
+                boxes[i].style.display = "flex";
+                boxes[i].style.justifyContent = "center";
+                boxes[i].style.alignItems = "center";
+
+                // Check for winner
+                const winner = checkWinner(board);
+                if (winner) {
+                    gameOver = true;
+                    setTimeout(() => {
+                        Toast(winner + ' wins!');
+                        gameOverFunc()
+                    }, 100);
+                    return;
+                }
+                // Check for draw
+                if (board.every(cell => cell !== "")) {
+                    gameOver = true;
+                    setTimeout(() => {
+                        Toast('Draw!');
+                        gameOverFunc()
+                    }, 100);
+                    return;
+                }
+                // Switch turn
+                turn = (turn == "X") ? "O" : "X";
+            }
+        });
+    }
+
+
+    function gameOverFunc() {
+        setTimeout(() => {
+            location.reload();
+        }, 3000)
+    }
+
+
+</script>
+</body>
+</html>
