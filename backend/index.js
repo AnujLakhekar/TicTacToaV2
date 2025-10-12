@@ -95,11 +95,11 @@ app.get("/local", (req, res) => {
 });
 
 app.get("/multiplayer", (req, res) => {
-    res.sendFile(join(__dirname, "../public/multiplayer.html"));
+    res.sendFile(join(__dirname, "src/MultiPlayer.html"));
 });
 
 app.get("/multiplayer/:id", (req, res) => {
-    res.sendFile(join(__dirname, "../public/multiplayer.html"));
+    res.sendFile(join(__dirname, "src/MultiPlayer.html"));
 });
 
 server.listen(3000, () => console.log("Server running on http://localhost:3000"));
